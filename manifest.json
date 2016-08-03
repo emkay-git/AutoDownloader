@@ -1,0 +1,26 @@
+{
+	"manifest_version": 2,
+	"name": "My Cool Extension",
+	"version": "0.1",
+	"permissions": [ "tabs",
+	"http://localhost:5000"
+ 	
+],
+	"background": {"scripts": ["jquery.js","background.js"]},
+	"content_scripts": [
+{
+	"matches": [
+		"https://www.youtube.com/*"
+	],
+	"js":  ["jquery.js","content.js"]
+}
+	],
+
+	
+	"browser_action": {
+  "default_icon": "icon.png"
+}
+	
+	
+	
+}
