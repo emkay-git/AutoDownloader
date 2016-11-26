@@ -1,7 +1,7 @@
 function click(e) {
 	console.log("Its here "+e.target.id);
   chrome.runtime.sendMessage({"clicked":e.target.id});
-  
+  window.close();
 }
 
 
