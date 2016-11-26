@@ -1,6 +1,6 @@
 var tabsId = [];
 var runningTab= 0 ;
-
+var micStatus="On";
 function downloadVideo(url)
 {
 	
@@ -14,8 +14,10 @@ function downloadVideo(url)
 
 chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
 	
-	if(request.greeting==="download")
+	// console.log("I am inside");
+	if(request.greeting==="download"|| request.clicked==="download")
 	{
+
 		 chrome.tabs.query({audible:true },function(tabs){
 			if(tabs.length==1)
 			{
@@ -29,16 +31,28 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
 	else if(request.greeting==="hello")
 	{
 		tabsId.push(sender.tab.id);
-		console.log("I am in "+sender.tab.id);	
+		console.log("I am in array "+sender.tab.id);	
 	}
 
-	
+	else if(request.clicked==="micOff")
+	{
+		console.log(request.clicked);
+		micStatus="Off";
+		chrome.tabs.sendMessage(tabsId[0],{"message":"playMic","micStatus":"Off"});
+	}
+	else if(request.clicked==="micOn")
+	{
+		micStatus="On";
+		chrome.tabs.sendMessage(tabsId[0],{"message":"playMic","micStatus":"On"});
+	}
 
 	if(runningTab==0)
 	{
 		//console.log("Its 0 ");
 		runningTab=tabsId[0];
-	  	chrome.tabs.sendMessage(tabsId[0],{"message":"playMic"});
+		console.log("Running Tab is "+runningTab);
+	  	chrome.tabs.sendMessage(tabsId[0],{"message":"playMic","micStatus":"On"});
+	  	micStatus="On";
 	}
 	else
 	{
@@ -55,12 +69,12 @@ chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
 		
 });
 
-if(tabsId.length>0&&runningTab==0)
-{
-	console.log("I am outside ");
-	runningTab=tabsId[0];
-	chrome.tabs.sendMessage(tabsId[0],{"message":"playMic"});
-}
+// if(tabsId.length>0&&runningTab==0)
+// {
+// 	console.log("I am outside ");
+// 	runningTab=tabsId[0];
+// 	chrome.tabs.sendMessage(tabsId[0],{"message":"playMic","micStatus":"On"});
+// }
 
 chrome.tabs.onRemoved.addListener(function(tabId){
 	console.log(tabId);
@@ -73,10 +87,10 @@ chrome.tabs.onRemoved.addListener(function(tabId){
 		{
 			if(tabsId.length>0)
 			{
-				chrome.tabs.sendMessage(tabsId[0],{"message":"playMic"});
+				chrome.tabs.sendMessage(tabsId[0],{"message":"playMic","micStatus":micStatus});
 				runningTab=tabsId[0];
 			}
-			else runningTab=0;
+			else {runningTab=0; micStatus="On";}
 		}
 	}
 	
