@@ -1,7 +1,7 @@
 # AutoDownloader
 It's yet another youtube downloader in a chrome/chromium extension flavour. You can download a current playing youtube song through a drop down menu from the extension or use your voice to say **Download** and it's done.
 </br>
-Small demo is shown shown in the following youtube video.
+Small demo is shown in the following youtube video.
 <p align="center">
 <a href="https://youtu.be/9F-mzREjV2Y">
 <img src="https://img.youtube.com/vi/9F-mzREjV2Y/0.jpg" /> </a>
